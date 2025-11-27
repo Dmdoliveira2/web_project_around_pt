@@ -26,5 +26,5 @@ const initialCards = [
 ];
 
 initialCards.forEach(function (item) {
-  console.log(item + ".");
+  console.log(item.nome);
 });
