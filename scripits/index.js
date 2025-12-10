@@ -28,3 +28,31 @@ const initialCards = [
 initialCards.forEach(function (item) {
   console.log(item.nome);
 });
+
+const editProfile = document.querySelector(".profile__edit-button");
+const editModal = document.querySelector("#edit-popup");
+const closeButton = editModal.querySelector(".popup__close");
+
+function openEditModal() {
+  editModal.classList.add("popup_is-opened");
+}
+function closeEditModal() {
+  editModal.classList.remove("popup_is-opened");
+}
+
+editProfile.addEventListener("click", openEditModal);
+closeButton.addEventListener("click", closeEditModal);
+
+function fillProfileForm() {
+  const currentName = document.querySelector(".profile__title").textContent;
+  document.querySelector(".popup__input_type_name").value = currentName;
+  const currentJob = document.querySelector(
+    ".profile__description"
+  ).textContent;
+  document.querySelector(".popup__input_type_description").value = currentJob;
+}
+
+function handleOpenEditModal() {
+  fillProfileForm();
+  openModal(editModal);
+}
