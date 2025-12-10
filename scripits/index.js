@@ -56,3 +56,17 @@ function handleOpenEditModal() {
   fillProfileForm();
   openModal(editModal);
 }
+editProfile.addEventListener("click", handleOpenEditModal);
+
+const profileForm = editModal.querySelector(".popup__form");
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
+  const newName = profileForm.querySelector(".popup__input_type_name").value;
+  const newJob = profileForm.querySelector(
+    ".popup__input_type_description"
+  ).value;
+  document.querySelector(".profile__title").textContent = newName;
+  document.querySelector(".profile__description").textContent = newJob;
+  closeEditModal();
+}
+profileForm.addEventListener("submit", handleProfileFormSubmit);
