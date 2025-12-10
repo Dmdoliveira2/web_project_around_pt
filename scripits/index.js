@@ -70,3 +70,4 @@ function handleProfileFormSubmit(evt) {
   closeEditModal();
 }
 profileForm.addEventListener("submit", handleProfileFormSubmit);
+
