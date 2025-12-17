@@ -32,6 +32,7 @@ initialCards.forEach(function (item) {
 const editProfile = document.querySelector(".profile__edit-button");
 const editModal = document.querySelector("#edit-popup");
 const closeButton = editModal.querySelector(".popup__close");
+const cardTemplate = document.querySelector('#template__cards');
 
 function openEditModal() {
   editModal.classList.add("popup_is-opened");
@@ -71,3 +72,6 @@ function handleProfileFormSubmit(evt) {
 }
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 
+function getCardElement(name, link) {
+  
+ 
