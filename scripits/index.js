@@ -73,5 +73,4 @@ function handleProfileFormSubmit(evt) {
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 
 function getCardElement(name, link) {
-  
- 
+}
