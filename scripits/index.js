@@ -34,6 +34,10 @@ const editModal = document.querySelector("#edit-popup");
 const closeButton = editModal.querySelector(".popup__close");
 const cardTemplate = document.querySelector('#template__cards');
 const cardsContainer = document.querySelector(".cards__list");
+const newCardForm = document.querySelector("#new-card-form");
+const cardNameInput = document.querySelector(".popup__input_type_card-name");
+const cardLinkInput = document.querySelector(".popup__input_type_url");
+const newCardPopup = document.querySelector("#new-card-popup");
 
 
 function openEditModal() {
@@ -87,9 +91,21 @@ function getCardElement(name = "Lugar sem nome", link = "./images/placeholder.jp
 
 function renderCard(name, link, cardsContainer) {
   const cardElement = getCardElement(name, link);
-  cardsContainer.append(cardElement);
+  cardsContainer.prepend(cardElement);
 }
 
 initialCards.forEach(item =>   {
   renderCard(item.name, item.link, cardsContainer);
 });
+
+
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+  const cardName = cardNameInput.value;
+  const cardLink = cardLinkInput.value;
+  renderCard(cardName, cardLink, cardsContainer);
+  closeModal(newCardPopup);
+  newCardForm.reset();
+}
+
+newCardForm.addEventListener("submit", handleCardFormSubmit);
