@@ -33,6 +33,8 @@ const editProfile = document.querySelector(".profile__edit-button");
 const editModal = document.querySelector("#edit-popup");
 const closeButton = editModal.querySelector(".popup__close");
 const cardTemplate = document.querySelector('#template__cards');
+const cardsContainer = document.querySelector(".cards__list");
+
 
 function openEditModal() {
   editModal.classList.add("popup_is-opened");
@@ -72,5 +74,22 @@ function handleProfileFormSubmit(evt) {
 }
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 
-function getCardElement(name, link) {
+function getCardElement(name = "Lugar sem nome", link = "./images/placeholder.jpg") {
+  const cardElement = cardTemplate.content
+    .querySelector(".card")
+    .cloneNode(true);
+  const cardImage = cardElement.querySelector(".card__image");
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardElement.querySelector(".card__title").textContent = name; 
+  return cardElement;
 }
+
+function renderCard(name, link, cardsContainer) {
+  const cardElement = getCardElement(name, link);
+  cardsContainer.append(cardElement);
+}
+
+initialCards.forEach(item =>   {
+  renderCard(item.name, item.link, cardsContainer);
+});
