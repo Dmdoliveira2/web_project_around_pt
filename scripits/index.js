@@ -8,8 +8,8 @@ const initialCards = [
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
   },
   {
-    name: "Montanhas Calcareas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_british-columbia.jpg",
+    name: "Montanhas Carecas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
   },
   {
     name: "Latemar",
@@ -21,7 +21,7 @@ const initialCards = [
   },
   {
     name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago-di-braies.jpg",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
   },
 ];
 
@@ -39,6 +39,8 @@ const cardNameInput = document.querySelector(".popup__input_type_card-name");
 const cardLinkInput = document.querySelector(".popup__input_type_url");
 const newCardPopup = document.querySelector("#new-card-popup");
 const addButton = document.querySelector('.profile__add-button');
+
+
  
 
 function openEditModal() {
@@ -46,6 +48,21 @@ function openEditModal() {
 }
 function closeEditModal() {
   editModal.classList.remove("popup_is-opened");
+}
+
+function handleImageClick(name, link) {
+  const imageModal = document.querySelector("#image-popup");
+  const modalImage = imageModal.querySelector(".popup__image");
+  const modalCaption = imageModal.querySelector(".popup__caption");
+  modalImage.src = link;
+  modalImage.alt = name;
+  modalCaption.textContent = name;
+  openModal(imageModal);
+  const closeImageButton = imageModal.querySelector(".popup__close");
+  closeImageButton.addEventListener("click", () => {
+    closeModal(imageModal);
+  });
+  
 }
 
 editProfile.addEventListener("click", openEditModal);
@@ -86,7 +103,19 @@ function getCardElement(name = "Lugar sem nome", link = "./images/placeholder.jp
   const cardImage = cardElement.querySelector(".card__image");
   cardImage.src = link;
   cardImage.alt = name;
-  cardElement.querySelector(".card__title").textContent = name; 
+  cardElement.querySelector(".card__title").textContent = name;
+  cardImage.addEventListener("click", () => {
+    handleImageClick(name, link);
+  });
+  const likeButton = cardElement.querySelector(".card__like-button");
+  likeButton.addEventListener("click", () => {
+    likeButton.classList.toggle("card__like-button_is-active");
+  });
+  const deleteButton = cardElement.querySelector(".card__delete-button");
+  deleteButton.addEventListener("click", () => {
+    cardElement.remove();
+  });
+  
   return cardElement;
 }
 
@@ -127,5 +156,7 @@ function handleCardFormSubmit(evt) {
 }
 
 newCardForm.addEventListener("submit", handleCardFormSubmit);
+
+
 
 
