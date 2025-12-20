@@ -156,7 +156,3 @@ function handleCardFormSubmit(evt) {
 }
 
 newCardForm.addEventListener("submit", handleCardFormSubmit);
-
-
-
-
