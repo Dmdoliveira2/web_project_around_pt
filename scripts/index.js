@@ -39,16 +39,15 @@ const cardNameInput = document.querySelector(".popup__input_type_card-name");
 const cardLinkInput = document.querySelector(".popup__input_type_url");
 const newCardPopup = document.querySelector("#new-card-popup");
 const addButton = document.querySelector('.profile__add-button');
+const forms = document.getElementById('edit-profile-form');
+const nameInput = document.getElementById('name-input');
+const descriptionInput = document.getElementById('description-input');
+const formButton = document.getElementById('form-button');
+const nameError = document.getElementById('name-input-error');
+const descriptionError = document.getElementById('description-input-error');
 
 
  
-
-function openEditModal() {
-  editModal.classList.add("popup_is-opened");
-}
-function closeEditModal() {
-  editModal.classList.remove("popup_is-opened");
-}
 
 function handleImageClick(name, link) {
   const imageModal = document.querySelector("#image-popup");
@@ -65,8 +64,10 @@ function handleImageClick(name, link) {
   
 }
 
-editProfile.addEventListener("click", openEditModal);
-closeButton.addEventListener("click", closeEditModal);
+
+closeButton.addEventListener("click", () => {
+  closeModal(editModal);
+});
 
 function fillProfileForm() {
   const currentName = document.querySelector(".profile__title").textContent;
@@ -84,6 +85,7 @@ function handleOpenEditModal() {
 editProfile.addEventListener("click", handleOpenEditModal);
 
 const profileForm = editModal.querySelector(".popup__form");
+
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   const newName = profileForm.querySelector(".popup__input_type_name").value;
@@ -92,7 +94,7 @@ function handleProfileFormSubmit(evt) {
   ).value;
   document.querySelector(".profile__title").textContent = newName;
   document.querySelector(".profile__description").textContent = newJob;
-  closeEditModal();
+  closeModal(editModal);
 }
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 
@@ -156,3 +158,26 @@ function handleCardFormSubmit(evt) {
 }
 
 newCardForm.addEventListener("submit", handleCardFormSubmit);
+
+function validateInput(inputElement, errorElement) {
+  if (inputElement.validity.valid) {
+    errorElement.textContent = '';
+  } else {
+    errorElement.textContent = inputElement.validationMessage;
+  }
+};
+
+
+nameInput.addEventListener('input', () => {
+  validateInput(nameInput, nameError);
+});
+
+descriptionInput.addEventListener('input', () => {
+  validateInput(descriptionInput, descriptionError);
+});
+
+function toggleFormButton() {
+  formButton.disabled = !forms.checkValidity();
+}
+ 
+forms.addEventListener('input', toggleFormButton);
