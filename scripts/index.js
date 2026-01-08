@@ -45,6 +45,9 @@ const descriptionInput = document.getElementById('description-input');
 const formButton = document.getElementById('form-button');
 const nameError = document.getElementById('name-input-error');
 const descriptionError = document.getElementById('description-input-error');
+const createButton = newCardForm.querySelector('.popup__button');
+const urlError = document.getElementById('url-input-error');
+const cardNameError = document.querySelector('#popup-name-error');
 
 
  
@@ -80,6 +83,7 @@ function fillProfileForm() {
 
 function handleOpenEditModal() {
   fillProfileForm();
+  resetFormValidation(forms, formButton);
   openModal(editModal);
 }
 editProfile.addEventListener("click", handleOpenEditModal);
@@ -98,7 +102,7 @@ function handleProfileFormSubmit(evt) {
 }
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 
-function getCardElement(name = "Lugar sem nome", link = "./images/placeholder.jpg") {
+function getCardElement(name, link) {
   const cardElement = cardTemplate.content
     .querySelector(".card")
     .cloneNode(true);
@@ -131,6 +135,7 @@ initialCards.forEach(item =>   {
 });
 
 addButton.addEventListener('click', () => {
+  resetFormValidation(newCardForm, createButton);
   openModal(newCardPopup);
 });
 
@@ -176,8 +181,61 @@ descriptionInput.addEventListener('input', () => {
   validateInput(descriptionInput, descriptionError);
 });
 
-function toggleFormButton() {
-  formButton.disabled = !forms.checkValidity();
+function toggleFormButton(formElement, buttonElement) {
+  if (formElement.checkValidity()) {
+    buttonElement.disabled = false;
+  } else {
+    buttonElement.disabled = true;
+  }
 }
  
-forms.addEventListener('input', toggleFormButton);
+forms.addEventListener('input', () => {
+  toggleFormButton(forms, formButton);
+});
+
+cardNameInput.addEventListener('input', () => {
+  validateInput(cardNameInput, cardNameError);
+  toggleFormButton(newCardForm, createButton);
+}
+);
+
+cardLinkInput.addEventListener('input', () => {
+  validateInput(cardLinkInput, urlError);
+  toggleFormButton(newCardForm, createButton);
+}
+);
+
+function handleOverlayClick(evt) {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
+  }
+}
+
+const popups = document.querySelectorAll('.popup');
+
+popups.forEach((popup) => {
+  popup.addEventListener('click', handleOverlayClick);
+});
+
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_is-opened'); 
+    if (openedPopup) {
+      closeModal(openedPopup);
+    } 
+  }
+});
+
+function resetFormValidation(formElement, buttonElement) {
+  const errorElements = formElement.querySelectorAll('.popup__input-error');
+  errorElements.forEach((errorElement) => {
+    errorElement.textContent = '';
+  });
+
+  const inputElements = formElement.querySelectorAll('.popup__input');
+  inputElements.forEach((inputElement) => {
+    inputElement.classList.remove('popup__input_type_error'); 
+  });
+
+  buttonElement.disabled = true;
+}
