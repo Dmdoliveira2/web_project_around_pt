@@ -26,7 +26,7 @@ const initialCards = [
 ];
 
 initialCards.forEach(function (item) {
-  console.log(item.name);
+
 });
 
 const editProfile = document.querySelector(".profile__edit-button");
@@ -227,7 +227,7 @@ document.addEventListener('keydown', (evt) => {
 });
 
 function resetFormValidation(formElement, buttonElement) {
-  const errorElements = formElement.querySelectorAll('.popup__input-error');
+  const errorElements = formElement.querySelectorAll('.popup__error');
   errorElements.forEach((errorElement) => {
     errorElement.textContent = '';
   });
@@ -239,3 +239,5 @@ function resetFormValidation(formElement, buttonElement) {
 
   buttonElement.disabled = true;
 }
+
+
