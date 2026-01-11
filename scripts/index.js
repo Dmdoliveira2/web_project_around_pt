@@ -25,10 +25,6 @@ const initialCards = [
   },
 ];
 
-initialCards.forEach(function (item) {
-
-});
-
 const editProfile = document.querySelector(".profile__edit-button");
 const editModal = document.querySelector("#edit-popup");
 const closeButton = editModal.querySelector(".popup__close");
@@ -48,25 +44,23 @@ const descriptionError = document.getElementById('description-input-error');
 const createButton = newCardForm.querySelector('.popup__button');
 const urlError = document.getElementById('url-input-error');
 const cardNameError = document.querySelector('#popup-name-error');
+const imageModal = document.querySelector("#image-popup");
+const closeImageButton = imageModal.querySelector(".popup__close");
 
-
- 
+function handleCloseImageClick() {
+  closeModal(imageModal);
+  closeImageButton.removeEventListener("click", handleCloseImageClick);
+} 
 
 function handleImageClick(name, link) {
-  const imageModal = document.querySelector("#image-popup");
   const modalImage = imageModal.querySelector(".popup__image");
   const modalCaption = imageModal.querySelector(".popup__caption");
   modalImage.src = link;
   modalImage.alt = name;
   modalCaption.textContent = name;
   openModal(imageModal);
-  const closeImageButton = imageModal.querySelector(".popup__close");
-  closeImageButton.addEventListener("click", () => {
-    closeModal(imageModal);
-  });
-  
+  closeImageButton.addEventListener("click", handleCloseImageClick);
 }
-
 
 closeButton.addEventListener("click", () => {
   closeModal(editModal);
@@ -217,27 +211,21 @@ popups.forEach((popup) => {
   popup.addEventListener('click', handleOverlayClick);
 });
 
-document.addEventListener('keydown', (evt) => {
+function handleEscapeKey(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_is-opened'); 
     if (openedPopup) {
       closeModal(openedPopup);
+      document.removeEventListener('keydown', handleEscapeKey);
     } 
   }
-});
-
-function resetFormValidation(formElement, buttonElement) {
-  const errorElements = formElement.querySelectorAll('.popup__error');
-  errorElements.forEach((errorElement) => {
-    errorElement.textContent = '';
-  });
-
-  const inputElements = formElement.querySelectorAll('.popup__input');
-  inputElements.forEach((inputElement) => {
-    inputElement.classList.remove('popup__input_type_error'); 
-  });
-
-  buttonElement.disabled = true;
 }
+
+function openModal(modal) {
+  modal.classList.add('popup_is-opened');
+  document.addEventListener('keydown', handleEscapeKey);
+}
+
+
 
 
