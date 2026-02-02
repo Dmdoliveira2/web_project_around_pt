@@ -97,3 +97,6 @@ class Card {
     return this._element;
   }
 }
+
+// EXPORTANDO a classe Card para ser usada em outros arquivos
+export default Card;

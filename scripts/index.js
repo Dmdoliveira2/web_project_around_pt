@@ -1,3 +1,8 @@
+// IMPORTANDO as classes e funções de outros módulos
+import Card from './card.js';
+import FormValidator from './validade.js';
+import { openModal, closeModal, handleOverlayClick } from './ultils.js';
+
 const initialCards = [
   {
     name: "Vale de Yosemite",
@@ -25,6 +30,16 @@ const initialCards = [
   },
 ];
 
+// CONFIGURAÇÕES para a validação dos formulários
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
+
 const editProfile = document.querySelector(".profile__edit-button");
 const editModal = document.querySelector("#edit-popup");
 const closeButton = editModal.querySelector(".popup__close");
@@ -36,14 +51,6 @@ const cardLinkInput = document.querySelector(".popup__input_type_url");
 const newCardPopup = document.querySelector("#new-card-popup");
 const addButton = document.querySelector('.profile__add-button');
 const forms = document.getElementById('edit-profile-form');
-const nameInput = document.getElementById('name-input');
-const descriptionInput = document.getElementById('description-input');
-const formButton = document.getElementById('form-button');
-const nameError = document.getElementById('name-input-error');
-const descriptionError = document.getElementById('description-input-error');
-const createButton = newCardForm.querySelector('.popup__button');
-const urlError = document.getElementById('url-input-error');
-const cardNameError = document.querySelector('#popup-name-error');
 const imageModal = document.querySelector("#image-popup");
 const closeImageButton = imageModal.querySelector(".popup__close");
 
@@ -77,7 +84,7 @@ function fillProfileForm() {
 
 function handleOpenEditModal() {
   fillProfileForm();
-  resetFormValidation(forms, formButton);
+  editProfileValidator.resetValidation();
   openModal(editModal);
 }
 editProfile.addEventListener("click", handleOpenEditModal);
@@ -97,26 +104,10 @@ function handleProfileFormSubmit(evt) {
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 
 function getCardElement(name, link) {
-  const cardElement = cardTemplate.content
-    .querySelector(".card")
-    .cloneNode(true);
-  const cardImage = cardElement.querySelector(".card__image");
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardElement.querySelector(".card__title").textContent = name;
-  cardImage.addEventListener("click", () => {
-    handleImageClick(name, link);
-  });
-  const likeButton = cardElement.querySelector(".card__like-button");
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("card__like-button_is-active");
-  });
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  deleteButton.addEventListener("click", () => {
-    cardElement.remove();
-  });
-  
-  return cardElement;
+  // Cria uma nova instância da classe Card
+  const card = new Card({ name, link }, '#template__cards');
+  // Retorna o cartão gerado
+  return card.generateCard();
 }
 
 function renderCard(name, link, cardsContainer) {
@@ -129,18 +120,9 @@ initialCards.forEach(item =>   {
 });
 
 addButton.addEventListener('click', () => {
-  resetFormValidation(newCardForm, createButton);
+  newCardValidator.resetValidation();
   openModal(newCardPopup);
 });
-
-function openModal(popup) {
-  if (!popup) return;
-  popup.classList.add('popup_is-opened');
-}
-function closeModal(popup) {
-  if (!popup) return;
-  popup.classList.remove('popup_is-opened');
-}
 
 const newCardCloseButton = newCardPopup.querySelector('.popup__close');
 if (newCardCloseButton) {
@@ -158,74 +140,18 @@ function handleCardFormSubmit(evt) {
 
 newCardForm.addEventListener("submit", handleCardFormSubmit);
 
-function validateInput(inputElement, errorElement) {
-  if (inputElement.validity.valid) {
-    errorElement.textContent = '';
-  } else {
-    errorElement.textContent = inputElement.validationMessage;
-  }
-};
-
-
-nameInput.addEventListener('input', () => {
-  validateInput(nameInput, nameError);
-});
-
-descriptionInput.addEventListener('input', () => {
-  validateInput(descriptionInput, descriptionError);
-});
-
-function toggleFormButton(formElement, buttonElement) {
-  if (formElement.checkValidity()) {
-    buttonElement.disabled = false;
-  } else {
-    buttonElement.disabled = true;
-  }
-}
- 
-forms.addEventListener('input', () => {
-  toggleFormButton(forms, formButton);
-});
-
-cardNameInput.addEventListener('input', () => {
-  validateInput(cardNameInput, cardNameError);
-  toggleFormButton(newCardForm, createButton);
-}
-);
-
-cardLinkInput.addEventListener('input', () => {
-  validateInput(cardLinkInput, urlError);
-  toggleFormButton(newCardForm, createButton);
-}
-);
-
-function handleOverlayClick(evt) {
-  if (evt.target === evt.currentTarget) {
-    closeModal(evt.currentTarget);
-  }
-}
-
 const popups = document.querySelectorAll('.popup');
 
 popups.forEach((popup) => {
   popup.addEventListener('click', handleOverlayClick);
 });
 
-function handleEscapeKey(evt) {
-  if (evt.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_is-opened'); 
-    if (openedPopup) {
-      closeModal(openedPopup);
-      document.removeEventListener('keydown', handleEscapeKey);
-    } 
-  }
-}
+// CRIANDO INSTÂNCIAS DO FORMVALIDATOR PARA CADA FORMULÁRIO
 
-function openModal(modal) {
-  modal.classList.add('popup_is-opened');
-  document.addEventListener('keydown', handleEscapeKey);
-}
+// Validador para o formulário de edição de perfil
+const editProfileValidator = new FormValidator(validationConfig, forms);
+editProfileValidator.enableValidation();
 
-
-
-
+// Validador para o formulário de novo cartão
+const newCardValidator = new FormValidator(validationConfig, newCardForm);
+newCardValidator.enableValidation();
