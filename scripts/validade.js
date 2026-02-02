@@ -19,6 +19,9 @@ class FormValidator {
     // Busca o elemento de erro relacionado ao input
     const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
     
+    // Verifica se o elemento de erro existe antes de usar
+    if (!errorElement) return;
+    
     // Adiciona a classe de erro no input
     inputElement.classList.add(this._config.inputErrorClass);
     
@@ -31,6 +34,9 @@ class FormValidator {
   _hideInputError(inputElement) {
     // Busca o elemento de erro relacionado ao input
     const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+    
+    // Verifica se o elemento de erro existe antes de usar
+    if (!errorElement) return;
     
     // Remove a classe de erro do input
     inputElement.classList.remove(this._config.inputErrorClass);
