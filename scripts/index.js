@@ -1,4 +1,4 @@
-// IMPORTANDO as classes e funções de outros módulos
+
 import Card from './card.js';
 import FormValidator from './validade.js';
 import { openModal, closeModal, handleOverlayClick } from './ultils.js';

@@ -19,7 +19,7 @@ class Card {
     return cardElement;
   }
 
-  // MÉTODO PRIVADO: Adiciona os ouvintes de eventos (cliques nos botões)
+
   _setEventListeners() {
     // Quando clica no botão de curtir
     this._likeButton.addEventListener('click', () => {
